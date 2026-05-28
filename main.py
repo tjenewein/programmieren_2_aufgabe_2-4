@@ -30,5 +30,10 @@ def main():
         image = Image.open(st.session_state.picture_path)
         st.image(image, caption=st.session_state.current_user)
 
+
+
+
+
 if __name__ == "__main__":
     main()
+    
