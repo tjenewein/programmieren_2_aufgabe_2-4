@@ -8,7 +8,7 @@ from read_pandas import read_my_csv
 from read_pandas import pwr_plot  
 from read_pandas import make_plot
 from read_pandas import read_pd
-from read_pandas import heartrate
+from read_pandas import heartrate_plot
 from read_pandas import pwr_hr_plot
 
 
@@ -67,7 +67,7 @@ def main():
         st.write(f"Durchschnittliche Leistung: {mean}")
 
         #Heartrate Plot:
-        #fig2 = read_pandas.heartrate(df1)
+        #fig2 = read_pandas.heartrate_plot(df1)
         ##st.plotly_chart(fig2, use_container_width=True)
    
    

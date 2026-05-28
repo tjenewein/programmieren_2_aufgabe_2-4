@@ -3,7 +3,7 @@ from read_pandas import read_my_csv
 from read_pandas import pwr_plot  
 from read_pandas import make_plot
 from read_pandas import read_pd
-from read_pandas import heartrate
+from read_pandas import heartrate_plot
 from read_pandas import pwr_hr_plot
 
 
@@ -11,6 +11,9 @@ from read_pandas import pwr_hr_plot
 # Wo endet sich
 # Was ist die Maximale und Minimale Spannung
 # Grafik
+
+
+
 tab1, tab2 = st.tabs(["EKG-Data", "Power-Data"])
 
 with tab1:
@@ -23,21 +26,13 @@ with tab1:
 
 with tab2:
     st.header("Power-Data")
+
+    slide = st.slider("Maximale Herzfrequenz", min_value=100, max_value=230, step=1)
     
     df1 = read_pd()
 
-    '''
-    #Power Plot:
-    fig = pwr_plot(df1)
-    st.plotly_chart(fig, use_container_width=True)
-
-    
-
-    #Heartrate Plot:
-    fig2 = heartrate(df1)
-    st.plotly_chart(fig2, use_container_width=True)
-   '''
-    fig3 = pwr_hr_plot(df1)
+   
+    fig3 = pwr_hr_plot(slide,df1)
     st.plotly_chart(fig3)
 
     max_power = df1["PowerOriginal"].max()
@@ -47,3 +42,5 @@ with tab2:
 
     max_heart_rate = df1["HeartRate"].max()
     st.write(f"Maximale Herzfrequenz: {max_heart_rate}")
+
+    st.write(f"Maximale Herzfrequenz (Slider): {slide}")
