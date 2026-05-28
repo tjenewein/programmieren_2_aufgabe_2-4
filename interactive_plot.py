@@ -45,3 +45,5 @@ with tab2:
     st.write(f"Maximale Leistung: {max_power}")
     st.write(f"Durchschnittliche Leistung: {mean}")
 
+    max_heart_rate = df1["HeartRate"].max()
+    st.write(f"Maximale Herzfrequenz: {max_heart_rate}")

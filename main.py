@@ -58,8 +58,8 @@ def main():
         df1 = read_pandas.read_pd()
 
         #Power Plot:
-        fig = read_pandas.pwr_plot(df1)
-        st.plotly_chart(fig, use_container_width=True)
+        #fig = read_pandas.pwr_plot(df1)
+        #st.plotly_chart(fig, use_container_width=True)
 
         max_power = df1["PowerOriginal"].max()
         mean = df1["PowerOriginal"].mean()
@@ -67,8 +67,8 @@ def main():
         st.write(f"Durchschnittliche Leistung: {mean}")
 
         #Heartrate Plot:
-        fig2 = read_pandas.heartrate(df1)
-        st.plotly_chart(fig2, use_container_width=True)
+        #fig2 = read_pandas.heartrate(df1)
+        ##st.plotly_chart(fig2, use_container_width=True)
    
    
 
