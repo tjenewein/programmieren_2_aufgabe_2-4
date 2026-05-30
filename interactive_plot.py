@@ -1,9 +1,7 @@
 import streamlit as st
 from read_pandas import read_my_csv
-from read_pandas import pwr_plot  
 from read_pandas import make_plot
 from read_pandas import read_pd
-from read_pandas import heartrate_plot
 from read_pandas import pwr_hr_plot
 from read_pandas import read_zones 
 
@@ -39,6 +37,6 @@ with tab2:
 
 
     st.subheader("Zeit pro Herzfrequenzzone")
-    df_zones = read_zones(df1, slide)  # slide als Parameter hinzufügen
+    df_zones = read_zones(df1, slide)  
     st.dataframe(df_zones, hide_index=True)
 
