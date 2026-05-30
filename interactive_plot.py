@@ -5,13 +5,7 @@ from read_pandas import make_plot
 from read_pandas import read_pd
 from read_pandas import heartrate_plot
 from read_pandas import pwr_hr_plot
-
-
-# Wo startet sie Zeitreihe
-# Wo endet sich
-# Was ist die Maximale und Minimale Spannung
-# Grafik
-
+from read_pandas import read_zones 
 
 
 tab1, tab2 = st.tabs(["EKG-Data", "Power-Data"])
@@ -30,17 +24,21 @@ with tab2:
     slide = st.slider("Maximale Herzfrequenz", min_value=100, max_value=230, step=1)
     
     df1 = read_pd()
-
-   
     fig3 = pwr_hr_plot(slide,df1)
     st.plotly_chart(fig3)
 
     max_power = df1["PowerOriginal"].max()
-    mean = df1["PowerOriginal"].mean()
+    mean = round(df1["PowerOriginal"].mean(), 2)
+    max_heart_rate = df1["HeartRate"].max()
+    
+    
     st.write(f"Maximale Leistung: {max_power}")
     st.write(f"Durchschnittliche Leistung: {mean}")
-
-    max_heart_rate = df1["HeartRate"].max()
-    st.write(f"Maximale Herzfrequenz: {max_heart_rate}")
-
+    st.write(f"Maximale Herzfrequenz des Graphen: {max_heart_rate}")
     st.write(f"Maximale Herzfrequenz (Slider): {slide}")
+
+
+    st.subheader("Zeit pro Herzfrequenzzone")
+    df_zones = read_zones(df1, slide)  # slide als Parameter hinzufügen
+    st.dataframe(df_zones, hide_index=True)
+

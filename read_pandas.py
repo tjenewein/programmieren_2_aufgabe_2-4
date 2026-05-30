@@ -1,95 +1,106 @@
 import pandas as pd
 import plotly.express as px
 
-
+#Hier wird die CSV-Datei mit den EKG-Daten eingelesen
 def read_my_csv():
-    # Einlesen eines Dataframes
-    ## "\t" steht für das Trennzeichen in der txt-Datei (Tabulator anstelle von Beistrich)
-    ## header = None: es gibt keine Überschriften in der txt-Datei
     df = pd.read_csv("data/ekg_data/01_Ruhe.txt", sep="\t", header=None)
-
-    
-
     df.columns = ["Messwerte in mV","Zeit in ms"]
-    # Setzt die Columnnames im Dataframe
     return df
 
+# Hier wird die CSV-Datei mit den Leistungs- und Herzfrequenzdaten eingelesen
 def read_pd():
     df1 = pd.read_csv("C:\\Git\\programmieren_2_aufgabe_2\\programmieren_2_aufgabe_2-4\\data\\activities\\activity.csv")
     return df1
 
-
+# Hier wird ein Liniendiagramm erstellt, für die EKG-Daten
 def make_plot(df):
     fig1 = px.line(df.head(2000), x = "Zeit in ms", y = "Messwerte in mV")
     return fig1
 
-
+# Hier wird ein Liniendiagramm erstellt, das die Leistung über die Zeit darstellt
 def pwr_plot(df1):
-
-
     df1["Zeit_min"] = df1["Duration"].cumsum() / 60
     fig = px.line(y = df1["PowerOriginal"]  , x= df1["Zeit_min"], title="Leistung/Zeit(min)")
     labels = {"PowerOriginal": "Leistung", "Zeit_min": "Zeit (min)"}
     fig.update_layout(xaxis_title=labels["Zeit_min"], yaxis_title=labels["PowerOriginal"])
     return fig
 
-'''
-def heartrate(df1):
-    df1["Zeit_min"] = df1["Duration"].cumsum() / 60
-    fig = px.line(y = df1["HeartRate"]  , x= df1["Zeit_min"], title="Herzfrequenz/Zeit(min)")
-    labels = {"HeartRate": "Herzfrequenz", "Zeit_min": "Zeit (min)"}
-    fig.update_layout(xaxis_title=labels["Zeit_min"], yaxis_title=labels["HeartRate"])
-    return fig
-'''
 
-def heartrate_plot(df1):
+
+def get_zones(slide, df1): 
+    max_heart_rate = df1["HeartRate"].max()  # Maximal mögliche Herzfrequenz
+    #Hier wird die Herzfrequenz in 5 Zonen eingeteilt, basierend auf dem Slider-Wert (slide) und der maximalen Herzfrequenz im Datensatz
+    return [
+        (slide * 0.5, slide * 0.6, "Zone 1", "blue"),
+        (slide * 0.6, slide * 0.7, "Zone 2", "green"),
+        (slide * 0.7, slide * 0.8, "Zone 3", "yellow"),
+        (slide * 0.8, slide * 0.9, "Zone 4", "orange"),
+        (slide * 0.9, max_heart_rate, "Zone 5", "red"),
+    ]
+
+# Hier wird ein Liniendiagramm erstellt, das die Herzfrequenz über die Zeit darstellt, mit farblich markierten Bereichen für die verschiedenen Herzfrequenzzonen basierend auf dem Slider-Wert (slide)
+def heartrate_plot(df1, slide):
     df1["Zeit_min"] = df1["Duration"].cumsum() / 60
     fig = px.line(y=df1["HeartRate"], x=df1["Zeit_min"], title="Herzfrequenz/Zeit(min)")
 
-    # Zonen als farbige Hintergrundbereiche
-    fig.add_hrect(y0=220*0.5, y1=220*0.6, fillcolor="blue",   opacity=0.1, line_width=0, annotation_text="Zone 1")
-    fig.add_hrect(y0=220*0.6, y1=220*0.7, fillcolor="green",  opacity=0.1, line_width=0, annotation_text="Zone 2")
-    fig.add_hrect(y0=220*0.7, y1=220*0.8, fillcolor="yellow", opacity=0.1, line_width=0, annotation_text="Zone 3")
-    fig.add_hrect(y0=220*0.8, y1=220*0.9, fillcolor="orange", opacity=0.1, line_width=0, annotation_text="Zone 4")
-    fig.add_hrect(y0=220*0.9, y1=220,     fillcolor="red",    opacity=0.1, line_width=0, annotation_text="Zone 5")
+    for untere, obere, name, farbe in get_zones(slide):
+        fig.add_hrect(y0=untere, y1=obere, fillcolor=farbe, opacity=0.1,
+                      line_width=0, annotation_text=name)
 
     fig.update_layout(xaxis_title="Zeit (min)", yaxis_title="Herzfrequenz")
     return fig
 
+# Hier wird die Zeit berechnet, die in jeder Herzfrequenzzone verbracht wurde, basierend auf den Daten im DataFrame df1 und den definierten Zonen
+def read_zones(df1, slide):
+    ergebnisse = []
+    for untere, obere, name, _ in get_zones(slide, df1):
+        in_zone = df1[(df1["HeartRate"] >= untere) & (df1["HeartRate"] < obere)]
+        zeit_sekunden = in_zone["Duration"].sum()
+        ergebnisse.append({
+            "Zone": name,
+            "Zeit (s)": round(zeit_sekunden, 1),
+            "Zeit (min)": round(zeit_sekunden / 60, 2),
+        })
+    return pd.DataFrame(ergebnisse)
 
-
-def pwr_hr_plot(slide,df1):
+# Hier wird ein kombiniertes Diagramm erstellt, das sowohl die Leistung als auch die Herzfrequenz über die Zeit darstellt, mit farblich markierten Herzfrequenzzonen basierend auf dem Slider-Wert (slide)
+def pwr_hr_plot(slide, df1):
     df1["Zeit_min"] = df1["Duration"].cumsum() / 60
 
-    df_melt = df1[["Zeit_min", "PowerOriginal", "HeartRate"]].melt(
-        id_vars="Zeit_min",
-        value_vars=["PowerOriginal", "HeartRate"],
-        var_name="Messung",
-        value_name="Wert"
+    import plotly.graph_objects as go
+
+    fig = go.Figure()
+
+    # Power auf linker Achse
+    fig.add_trace(go.Scatter(
+        x=df1["Zeit_min"], y=df1["PowerOriginal"],
+        name="PowerOriginal", yaxis="y1", line=dict(color="blue")
+    ))
+
+    # HeartRate auf rechter Achse
+    fig.add_trace(go.Scatter(
+        x=df1["Zeit_min"], y=df1["HeartRate"],
+        name="HeartRate", yaxis="y2", line=dict(color="green")
+    ))
+
+    # Zonen korrekt auf y2
+    for untere, obere, name, farbe in get_zones(slide, df1):
+        fig.add_hrect(y0=untere, y1=obere, fillcolor=farbe, opacity=0.1,
+                      line_width=0, annotation_text=name, yref="y2")
+
+    fig.update_layout(
+        title="Leistung & Herzfrequenz vs. Zeit",
+        xaxis_title="Zeit (min)",
+        yaxis=dict(title="Leistung (W)", side="left"),
+        yaxis2=dict(title="Herzfrequenz (bpm)", side="right", overlaying="y"),
+        width=1200, height=600
     )
-
-
-    fig = px.line(df_melt, x="Zeit_min", y="Wert", color="Messung",
-                  title="Leistung & Herzfrequenz vs. Zeit")
-    
-    fig.for_each_trace(lambda t: t.update(yaxis="y2") if t.name == "HeartRate" else t)
-
-
-    min_heart_rate = df1["HeartRate"].min()
-    max_heart_rate = df1["HeartRate"].max()
-    
-    fig.add_hrect(y0=min_heart_rate, y1=slide*0.6, fillcolor="blue",   opacity=0.1, line_width=0, annotation_text="Zone 1", yref="y2")
-    fig.add_hrect(y0=slide*0.6, y1=slide*0.7, fillcolor="green",  opacity=0.1, line_width=0, annotation_text="Zone 2", yref="y2")
-    fig.add_hrect(y0=slide*0.7, y1=slide*0.8, fillcolor="yellow", opacity=0.1, line_width=0, annotation_text="Zone 3", yref="y2")
-    fig.add_hrect(y0=slide*0.8, y1=slide*0.9, fillcolor="orange", opacity=0.1, line_width=0, annotation_text="Zone 4", yref="y2")
-    fig.add_hrect(y0=slide*0.9, y1=max_heart_rate, fillcolor="red",    opacity=0.1, line_width=0, annotation_text="Zone 5", yref="y2")
-
-    fig.data[0].update(line=dict(color="blue"))   # PowerOriginal
-    fig.data[1].update(line=dict(color="green"))    # HeartRate
-
-    fig.update_layout(xaxis_title="Zeit (min)", yaxis = dict(title="Leistung (W)", side="left"),
-        yaxis2=dict(title="Herzfrequenz (bpm)", side="right", overlaying = "y"), width = 1200, height = 600)
     return fig
+
+
+
+
+
 '''
 def add_zones(df1):
     
@@ -100,3 +111,11 @@ def add_zones(df1):
     df1["Zone5"] = df1["HeartRate"] > 220*0.9 
 '''
 
+'''
+def heartrate(df1):
+    df1["Zeit_min"] = df1["Duration"].cumsum() / 60
+    fig = px.line(y = df1["HeartRate"]  , x= df1["Zeit_min"], title="Herzfrequenz/Zeit(min)")
+    labels = {"HeartRate": "Herzfrequenz", "Zeit_min": "Zeit (min)"}
+    fig.update_layout(xaxis_title=labels["Zeit_min"], yaxis_title=labels["HeartRate"])
+    return fig
+'''
