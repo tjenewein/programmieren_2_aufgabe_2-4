@@ -1,5 +1,3 @@
-from operator import contains
-
 import streamlit as st
 from PIL import Image
 import load_data
