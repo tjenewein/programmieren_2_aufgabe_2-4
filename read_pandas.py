@@ -9,7 +9,7 @@ def read_my_csv():
 
 # Hier wird die CSV-Datei mit den Leistungs- und Herzfrequenzdaten eingelesen
 def read_pd():
-    df1 = pd.read_csv("C:\\Git\\programmieren_2_aufgabe_2\\programmieren_2_aufgabe_2-4\\data\\activities\\activity.csv")
+    df1 = pd.read_csv("data/activities/activity.csv")
     return df1
 
 # Hier wird ein Liniendiagramm erstellt, für die EKG-Daten
