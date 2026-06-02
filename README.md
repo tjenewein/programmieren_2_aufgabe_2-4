@@ -42,6 +42,7 @@ Plots **power output and heart rate** over the duration of an activity and split
 | 5    | Anaerobic / VO₂  | 90–100 %    |
 
 For each zone, the app calculates and displays **how long the test subject stayed in that zone** during the recorded activity.
+![Resulting power heartrate plot](Power_Hr_Screen.png)
 
 ---
 
