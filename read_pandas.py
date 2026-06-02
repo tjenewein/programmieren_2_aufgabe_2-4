@@ -99,6 +99,19 @@ def pwr_hr_plot(slide, df1):
 
 
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 '''

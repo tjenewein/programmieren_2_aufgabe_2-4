@@ -6,6 +6,7 @@ from read_pandas import pwr_hr_plot
 from read_pandas import read_zones 
 
 
+
 tab1, tab2 = st.tabs(["EKG-Data", "Power-Data"])
 
 with tab1:
@@ -15,6 +16,7 @@ with tab1:
     df = read_my_csv()
     fig1 = make_plot(df)
     st.plotly_chart(fig1)
+
 
 with tab2:
     st.header("Power-Data")

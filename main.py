@@ -40,6 +40,8 @@ def main():
         image = Image.open(st.session_state.picture_path)
         st.image(image, caption=st.session_state.current_user)
 
+
+"""
     tab1, tab2 = st.tabs(["EKG-Data", "Power-Data"])
 
     with tab1:
@@ -71,11 +73,9 @@ def main():
    
 
 
-        fig3 = read_pandas.pwr_hr_plot(df1)
-        st.plotly_chart(fig3, use_container_width=True)
-
-
-
+        #fig3 = read_pandas.pwr_hr_plot(df1)
+        #st.plotly_chart(fig3, use_container_width=True)
+"""
 
 
 if __name__ == "__main__":
