@@ -1,6 +1,5 @@
-# leistungskurve_ii
 
-# Power Curve Analyzer
+# Power Curve advanced
 
 > A Python module for computing and visualizing the power-duration curve from cycling activity data.
 
@@ -57,8 +56,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd leistungskurve_ii
+git clone <https://github.com/tjenewein/programmieren_2_aufgabe_2-4.git>
 ```
 
 ### Install Dependencies
@@ -95,7 +93,7 @@ This will:
 ## Project Structure
 
 ```
-PROGRAMMIEREN_2_AUFG.../
+PROGRAMMIEREN_2_AUFGABE_2-4/
 │
 ├── data/
 │   ├── activities/
