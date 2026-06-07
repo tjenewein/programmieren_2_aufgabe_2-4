@@ -99,11 +99,6 @@ def pwr_hr_plot(slide, df1):
 
 
 
-    
-
-
-
-
 
 
 
@@ -122,9 +117,10 @@ def add_zones(df1):
     df1["Zone3"] = df1["HeartRate"] > 220*0.7 and df1["HeartRate"] <= 220*0.8
     df1["Zone4"] = df1["HeartRate"] > 220*0.8 and df1["HeartRate"] <= 220*0.9
     df1["Zone5"] = df1["HeartRate"] > 220*0.9 
-'''
 
-'''
+
+
+
 def heartrate(df1):
     df1["Zeit_min"] = df1["Duration"].cumsum() / 60
     fig = px.line(y = df1["HeartRate"]  , x= df1["Zeit_min"], title="Herzfrequenz/Zeit(min)")
