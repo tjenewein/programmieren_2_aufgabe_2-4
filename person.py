@@ -67,6 +67,16 @@ class Person:
         current_year = 2026
         age = current_year - self.date_of_birth
         return age
+    
+    def calc_max_heart_rate(self):
+        age = self.calc_age()
+        if self.gender == "Male":
+            self.hr_max = 220 - age
+        elif self.gender == "Female":
+            self.hr_max = 226 - age 
+        else:
+            self.hr_max = 220 - age
+        return self.hr_max
 
 
 
@@ -76,3 +86,4 @@ if __name__ == "__main__":
     person_names = Person.get_person_list(persons)
     print(person_names)
     print(Person.find_person_data_by_name("Huber, Julian"))
+    print(Person.find_person_data_by_name("Huber, Julian").ekg_tests)

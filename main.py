@@ -8,6 +8,8 @@ from read_pandas import make_plot
 from read_pandas import read_pd
 from read_pandas import heartrate_plot
 from read_pandas import pwr_hr_plot
+from person import Person, get_person_object_by_full_name
+from ekgdata import EKGdata
 
 
 
@@ -39,11 +41,21 @@ def main():
 
         image = Image.open(st.session_state.picture_path)
         st.image(image, caption=st.session_state.current_user)
+    
+
+    # NEU: EKG Plot unter dem bestehenden Inhalt
+    st.write("## EKG Daten")
+    person_obj = get_person_object_by_full_name(st.session_state.current_user)
+    
+    if person_obj and person_obj.ekg_tests:
+        ekg_dict = person_obj.ekg_tests[0]
+        ekg = EKGdata(ekg_dict)
+        fig = ekg.plot_time_series(0.5)
+        st.plotly_chart(fig)
+    else:
+        st.write("Keine EKG-Daten vorhanden.")
 
 
 
 if __name__ == "__main__":
     main()
-
-
-    
