@@ -39,7 +39,11 @@ class EKGdata:
         self.fig.add_scatter(x=self.peaks['Zeit in ms'], y=self.peaks['Messwerte in mV'], mode='markers', name='Peaks')
         return self.fig
 
-
+    def calc_mean_hr(self):
+        calculated_hr = self.estimate_hr()
+        mean_hr = calculated_hr['HR'].mean()
+        return mean_hr
+        
 if __name__ == "__main__":
     file = open("data/person_db.json")
     person_data = json.load(file)

@@ -41,20 +41,26 @@ def main():
 
         image = Image.open(st.session_state.picture_path)
         st.image(image, caption=st.session_state.current_user)
-    
 
-    # NEU: EKG Plot unter dem bestehenden Inhalt
+  
+    # EKG Plot mit Test-Auswahl
     st.write("## EKG Daten")
     person_obj = get_person_object_by_full_name(st.session_state.current_user)
     
     if person_obj and person_obj.ekg_tests:
-        ekg_dict = person_obj.ekg_tests[0]
+        ekg_options = [f"Test {t['id']} - {t['date']}" for t in person_obj.ekg_tests]
+        selected_test = st.selectbox("EKG Test auswählen", options=ekg_options, key="sbEKGTest")
+        
+        test_index = ekg_options.index(selected_test)
+        ekg_dict = person_obj.ekg_tests[test_index]
+        
         ekg = EKGdata(ekg_dict)
-        fig = ekg.plot_time_series(0.5)
+        fig = ekg.plot_time_series()
         st.plotly_chart(fig)
     else:
         st.write("Keine EKG-Daten vorhanden.")
 
+    st.write(EKGdata.calc_mean_hr(ekg))
 
 
 if __name__ == "__main__":
