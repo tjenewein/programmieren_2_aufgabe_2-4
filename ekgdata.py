@@ -41,8 +41,8 @@ class EKGdata:
 
     def calc_mean_hr(self):
         calculated_hr = self.estimate_hr()
-        mean_hr = calculated_hr['HR'].mean()
-        return mean_hr
+        mean_hr = calculated_hr['HR'].mean().round(2)
+        return f"Durchschnittliche Herzfrequenz: {mean_hr} BPM"
         
 if __name__ == "__main__":
     file = open("data/person_db.json")
