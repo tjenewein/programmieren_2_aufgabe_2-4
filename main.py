@@ -41,42 +41,6 @@ def main():
         st.image(image, caption=st.session_state.current_user)
 
 
-"""
-    tab1, tab2 = st.tabs(["EKG-Data", "Power-Data"])
-
-    with tab1:
-
-        st.header("EKG-Data")
-        st.write("# My Plot")
-        df = read_pandas.read_my_csv()
-        fig1 = read_pandas.make_plot(df)
-        st.plotly_chart(fig1)
-
-    with tab2:
-        st.header("Power-Data")
-    
-        df1 = read_pandas.read_pd()
-
-        #Power Plot:
-        #fig = read_pandas.pwr_plot(df1)
-        #st.plotly_chart(fig, use_container_width=True)
-
-        max_power = df1["PowerOriginal"].max()
-        mean = df1["PowerOriginal"].mean()
-        st.write(f"Maximale Leistung: {max_power}")
-        st.write(f"Durchschnittliche Leistung: {mean}")
-
-        #Heartrate Plot:
-        #fig2 = read_pandas.heartrate_plot(df1)
-        ##st.plotly_chart(fig2, use_container_width=True)
-   
-   
-
-
-        #fig3 = read_pandas.pwr_hr_plot(df1)
-        #st.plotly_chart(fig3, use_container_width=True)
-"""
-
 
 if __name__ == "__main__":
     main()
