@@ -38,7 +38,7 @@ def main():
             person = load_data.find_person_data_by_name(st.session_state.current_user)
             if person:
                 st.session_state.picture_path = person["picture_path"]
-
+        
         image = Image.open(st.session_state.picture_path)
         st.image(image, caption=st.session_state.current_user)
 
@@ -46,7 +46,8 @@ def main():
     # EKG Plot mit Test-Auswahl
     st.write("## EKG Daten")
     person_obj = get_person_object_by_full_name(st.session_state.current_user)
-    
+  
+
     if person_obj and person_obj.ekg_tests:
         ekg_options = [f"Test {t['id']} - {t['date']}" for t in person_obj.ekg_tests]
         selected_test = st.selectbox("EKG Test auswählen", options=ekg_options, key="sbEKGTest")
@@ -65,3 +66,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    #

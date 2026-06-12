@@ -42,4 +42,19 @@
 		"date": "11.3.2023",
 		"result_link": "data/ekg_data/03_Ruhe.txt"
 	}]
+}, {
+	"id": 4,
+	"date_of_birth": 1973,
+	"firstname": "Garfield",
+	"lastname": "Redhead",
+	"gender" : "male",
+    "picture_path" : "data/pictures/Garfield.gif",
+	"ekg_tests": [{
+		"id": 4,
+		"date": "11.3.2023",
+		"result_link": "data/ekg_data/03_Ruhe.txt"
+	}]
 }]
+
+
+
